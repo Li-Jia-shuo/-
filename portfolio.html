@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李佳硕 · 电商运营作品集</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+:root {
+  --primary: #1e3a5f;
+  --primary-light: #2c5282;
+  --accent: #3182ce;
+  --accent-light: #63b3ed;
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+  --success: #38a169;
+  --warning: #d69e2e;
+  --danger: #e53e3e;
+  --purple: #805ad5;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ===== 导航栏 ===== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(30, 58, 95, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 60px;
+}
+.nav-logo { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.nav-logo span { color: var(--accent-light); }
+.nav-links { display: flex; gap: 6px; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,0.8); text-decoration: none;
+  font-size: 14px; padding: 8px 14px; border-radius: 6px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: #fff; background: rgba(255,255,255,0.15);
+}
+.nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+
+/* ===== Hero ===== */
+.hero {
+  margin-top: 60px;
+  background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #3182ce 100%);
+  color: #fff; padding: 80px 24px 100px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,179,237,0.2) 0%, transparent 70%);
+}
+.hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+.hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 12px; letter-spacing: 2px; }
+.hero .subtitle { font-size: 18px; opacity: 0.9; margin-bottom: 24px; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+.hero-tag {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 16px; border-radius: 20px; font-size: 14px;
+}
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 800px; }
+.hero-stat { text-align: center; }
+.hero-stat .num { font-size: 32px; font-weight: 800; color: var(--accent-light); }
+.hero-stat .label { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+/* ===== 通用 Section ===== */
+.section { padding: 70px 24px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-header .num {
+  display: inline-block; font-size: 14px; font-weight: 700;
+  color: var(--accent); letter-spacing: 3px; margin-bottom: 8px;
+}
+.section-header h2 { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+.section-header p { color: var(--text-light); font-size: 15px; max-width: 600px; margin: 0 auto; }
+
+.card {
+  background: var(--card); border-radius: 14px; padding: 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px;
+}
+.card h3 {
+  font-size: 19px; color: var(--primary); margin-bottom: 16px;
+  padding-left: 12px; border-left: 4px solid var(--accent);
+}
+.card h4 { font-size: 16px; color: var(--primary-light); margin: 18px 0 10px; }
+.card p { margin-bottom: 10px; font-size: 14.5px; color: #4a5568; }
+.card ul, .card ol { padding-left: 22px; margin-bottom: 12px; }
+.card li { margin-bottom: 6px; font-size: 14.5px; color: #4a5568; }
+.card strong { color: var(--primary); }
+
+/* ===== 数据卡片 ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: linear-gradient(135deg, #fff 0%, #f0f7ff 100%);
+  border-radius: 12px; padding: 20px; text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-card .num { font-size: 28px; font-weight: 800; color: var(--accent); }
+.stat-card .label { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+
+/* ===== 标签 ===== */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; margin: 2px; }
+.tag-blue { background: #ebf8ff; color: #2b6cb0; }
+.tag-green { background: #f0fff4; color: #276749; }
+.tag-orange { background: #fffaf0; color: #c05621; }
+.tag-red { background: #fff5f5; color: #c53030; }
+.tag-purple { background: #faf5ff; color: #6b46c1; }
+.tag-gray { background: #f7fafc; color: #4a5568; }
+
+/* ===== 表格 ===== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 12px 0; }
+.data-table th {
+  background: var(--primary); color: #fff; padding: 10px 12px;
+  text-align: left; font-weight: 600;
+}
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.data-table tr:nth-child(even) { background: #f7fafc; }
+.data-table tr:hover { background: #ebf8ff; }
+
+/* ===== 图表容器 ===== */
+.chart-box { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.chart-box h3 { font-size: 16px; color: var(--primary); margin-bottom: 12px; }
+.chart { width: 100%; height: 360px; }
+.chart-tall { height: 420px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+/* ===== 流程图 ===== */
+.flow-section { background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+.flow-ring-container { position: relative; width: 100%; max-width: 780px; height: 600px; margin: 0 auto; }
+.flow-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+.flow-hub {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 130px; height: 130px; border-radius: 50%;
+  background: linear-gradient(145deg, #2c5282, #1a365d);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 15px; font-weight: 800; text-align: center; line-height: 1.5;
+  box-shadow: 0 12px 32px rgba(26,54,93,0.5), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -4px 8px rgba(0,0,0,0.25);
+  z-index: 10; border: 3px solid rgba(255,255,255,0.35);
+}
+.flow-ring-node {
+  position: absolute; width: 158px; padding: 12px 12px 10px;
+  border-radius: 14px; color: #fff; z-index: 5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -3px 6px rgba(0,0,0,0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.flow-ring-node:hover { z-index: 20; }
+.flow-ring-node .icon { font-size: 22px; margin-bottom: 2px; }
+.flow-ring-node h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+.flow-ring-node p { font-size: 11px; line-height: 1.5; opacity: 0.93; margin: 0; }
+.flow-node-top { left: 50%; top: 0; transform: translateX(-50%); background: linear-gradient(145deg, #fc8181, #c53030); }
+.flow-node-top:hover { transform: translateX(-50%) scale(1.07); }
+.flow-node-tr { right: 0; top: 16%; background: linear-gradient(145deg, #f6ad55, #c05621); }
+.flow-node-tr:hover { transform: scale(1.07); }
+.flow-node-br { right: 0; top: 57%; background: linear-gradient(145deg, #63b3ed, #2b6cb0); }
+.flow-node-br:hover { transform: scale(1.07); }
+.flow-node-bottom { left: 50%; bottom: 0; transform: translateX(-50%); background: linear-gradient(145deg, #68d391, #276749); }
+.flow-node-bottom:hover { transform: translateX(-50%) scale(1.07); }
+.flow-node-bl { left: 0; top: 57%; background: linear-gradient(145deg, #b794f4, #553c9a); }
+.flow-node-bl:hover { transform: scale(1.07); }
+.flow-node-tl { left: 0; top: 16%; background: linear-gradient(145deg, #f6e05e, #b7791f); }
+.flow-node-tl:hover { transform: scale(1.07); }
+/* AI案例部分通用卡片节点 */
+.flow-node { background: #fff; border-radius: 12px; padding: 18px; border-top: 4px solid var(--accent); box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: transform 0.2s; }
+.flow-node:hover { transform: translateY(-4px); }
+.flow-node .icon { font-size: 28px; margin-bottom: 8px; }
+.flow-node h4 { font-size: 15px; color: var(--primary); margin-bottom: 8px; }
+.flow-node p { font-size: 12.5px; color: var(--text-light); line-height: 1.6; margin: 0; }
+
+/* ===== 时间线 ===== */
+.timeline { position: relative; padding-left: 30px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 24px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -27px; top: 6px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--accent);
+}
+.timeline-item .time { font-size: 13px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.timeline-item .content { background: #fff; border-radius: 8px; padding: 14px 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+.timeline-item .content h5 { font-size: 14.5px; color: var(--primary); margin-bottom: 6px; }
+.timeline-item .content p { font-size: 13.5px; color: var(--text-light); margin: 0; }
+
+/* ===== 代码块 ===== */
+.code-block {
+  background: #1a202c; color: #e2e8f0; border-radius: 8px;
+  padding: 16px 20px; font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px; overflow-x: auto; margin: 10px 0; line-height: 1.6;
+}
+.code-block .comment { color: #718096; }
+.code-block .keyword { color: #63b3ed; }
+
+/* ===== 洞察卡片 ===== */
+.insight-item {
+  padding: 14px 18px; background: #f7fafc; border-radius: 8px;
+  margin-bottom: 10px; border-left: 3px solid var(--accent);
+}
+.insight-item .tag { margin-right: 8px; }
+.insight-item p { margin: 6px 0 0; font-size: 14px; color: #4a5568; }
+
+/* ===== 页脚 ===== */
+.footer {
+  background: var(--primary); color: rgba(255,255,255,0.7);
+  text-align: center; padding: 36px 24px; font-size: 13px;
+}
+.footer strong { color: #fff; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+  .two-col { grid-template-columns: 1fr; }
+  .flow-ring-container { height: 520px; max-width: 640px; }
+  .flow-ring-node { width: 135px; padding: 10px; }
+  .flow-ring-node p { font-size: 10px; }
+  .flow-ring-node h4 { font-size: 12.5px; }
+  .flow-hub { width: 110px; height: 110px; font-size: 13px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 30px; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--primary); padding: 16px; }
+  .nav-toggle { display: block; }
+}
+@media (max-width: 600px) {
+  .flow-ring-container { height: 460px; max-width: 100%; }
+  .flow-ring-node { width: 115px; padding: 8px; }
+  .flow-ring-node p { font-size: 9.5px; line-height: 1.4; }
+  .flow-ring-node h4 { font-size: 11.5px; }
+  .flow-ring-node .icon { font-size: 18px; }
+  .flow-hub { width: 95px; height: 95px; font-size: 12px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .section { padding: 50px 16px; }
+  .card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">李佳硕<span> · Portfolio</span></div>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="#overview" class="active">个人概览</a></li>
+      <li><a href="#planning">活动策划</a></li>
+      <li><a href="#competitor">竞品分析</a></li>
+      <li><a href="#diagnosis">运营诊断</a></li>
+      <li><a href="#ai">AI工具案例</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="overview">
+  <div class="hero-inner">
+    <h1>李佳硕</h1>
+    <div class="subtitle">电子商务本科在读 · 肇庆学院 · 2027届 ｜ 求职意向：国内 / 跨境电商运营</div>
+    <div class="hero-tags">
+      <span class="hero-tag">电商运营实操</span>
+      <span class="hero-tag">数据分析与复盘</span>
+      <span class="hero-tag">AI工具应用</span>
+      <span class="hero-tag">品牌营销策划</span>
+      <span class="hero-tag">抗压与学习力</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">5+</div><div class="label">实操项目</div></div>
+      <div class="hero-stat"><div class="num">230+</div><div class="label">评价数据抓取</div></div>
+      <div class="hero-stat"><div class="num">10万+</div><div class="label">运营数据分析</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="label">端口协同经验</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 个人概览 ===== -->
+<section class="section" style="padding-top:50px;">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">ABOUT ME</div>
+      <h2>个人概览</h2>
+      <p>2027届电子商务本科，具备天猫店铺运营实训经验，熟悉后台操作、活动申报与销售复盘全流程</p>
+    </div>
+    <div class="card">
+      <h3>自我评价</h3>
+      <p>2027届电子商务本科，具备天猫店铺运营实训经验，熟悉后台操作、活动申报与销售复盘全流程。擅长用数据发现问题：曾通过SPSS完成消费者行为研究，独立产出竞品分析与运营诊断报告。主动学习AI工具，能借助AI辅助标题优化、数据解读与内容生成，提升运营效率。</p>
+      <p>对品牌电商运营有清晰认知，目标在跨境电商/国内电商运营方向长期发展。学习力强、抗压性好，愿意从基础工作做起，与团队共同推动销售目标达成。</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <h3>核心技能</h3>
+        <ul>
+          <li><strong>电商运营：</strong>天猫后台操作、活动申报、商品上下架、会员运营</li>
+          <li><strong>数据分析：</strong>生意参谋、数据透视表、VLOOKUP、SPSS、ECharts可视化</li>
+          <li><strong>营销策划：</strong>GMV拆解、活动方案、双渠道协同（天猫+微信私域）</li>
+          <li><strong>AI工具：</strong>Playwright爬虫、UI Automation、AI辅助脚本开发与数据分析</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>作品集导航</h3>
+        <ul>
+          <li><span class="tag tag-blue">活动策划</span> 泡泡玛特Q4 GMV增长方案 + 超级新品日双渠道策划</li>
+          <li><span class="tag tag-green">竞品分析</span> 泡泡玛特CRYBABY & 52TOYS小水豚评价数据挖掘</li>
+          <li><span class="tag tag-orange">运营诊断</span> 长江号子店铺全维度数据诊断与策略建议</li>
+          <li><span class="tag tag-purple">AI案例</span> PyCharm + AI工具抓取天猫评论全流程实操</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 活动策划 ===== -->
+<section class="section" id="planning" style="background:#fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">02 / CAMPAIGN</div>
+      <h2>活动策划</h2>
+      <p>泡泡玛特天猫旗舰店 Q4 GMV 增长方案 + "超级新品日"双渠道活动策划</p>
+    </div>
+
+    <!-- GMV拆解 -->
+    <div class="card">
+      <h3>一、Q4 GMV 增长方案 — 公式拆解与策略</h3>
+      <p><strong>目标：</strong>GMV 同比增长 15%（参考618增长超120%）</p>
+      <p><strong>核心公式：</strong>GMV = 流量 × 转化率 × 客单价 × 购买频次</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">流量</div><div class="label">抖音拉新 + 天猫爆品权重</div></div>
+        <div class="stat-card"><div class="num">转化率</div><div class="label">视觉升级 × 饥饿营销 × 价格统一</div></div>
+        <div class="stat-card"><div class="num">客单价</div><div class="label">新品/限定款而非打折</div></div>
+        <div class="stat-card"><div class="num">复购</div><div class="label">会员等级 + 私域1v1换新</div></div>
+      </div>
+    </div>
+
+    <!-- 六端口协同流程图 -->
+    <div class="flow-section">
+      <h3 style="text-align:center;color:var(--primary);margin-bottom:20px;font-size:20px;">二、六端口协同工作流程图</h3>
+      <div class="flow-ring-container">
+        <svg class="flow-svg" viewBox="0 0 780 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="ringLine" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#a0aec0;stop-opacity:0.7"/>
+              <stop offset="100%" style="stop-color:#718096;stop-opacity:0.7"/>
+            </linearGradient>
+            <marker id="arrow" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 9 3, 0 6" fill="#718096" opacity="0.85"/>
+            </marker>
+          </defs>
+          <!-- 中心辐射线 -->
+          <line x1="390" y1="300" x2="390" y2="105" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <line x1="390" y1="300" x2="620" y2="175" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <line x1="390" y1="300" x2="620" y2="425" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <line x1="390" y1="300" x2="390" y2="495" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <line x1="390" y1="300" x2="160" y2="425" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <line x1="390" y1="300" x2="160" y2="175" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,4" opacity="0.65"/>
+          <!-- 闭环连接线（带箭头，向外凸出） -->
+          <path d="M 475 65 Q 580 40 645 115" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <path d="M 700 205 Q 725 300 700 395" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <path d="M 645 485 Q 580 560 475 535" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <path d="M 305 535 Q 200 560 135 485" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <path d="M 80 395 Q 55 300 80 205" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+          <path d="M 135 115 Q 200 40 305 65" fill="none" stroke="url(#ringLine)" stroke-width="2.5" marker-end="url(#arrow)"/>
+        </svg>
+        <!-- 中心 -->
+        <div class="flow-hub">活动统筹<br>项目管理</div>
+        <!-- 六个环形节点 -->
+        <div class="flow-ring-node flow-node-top">
+          <div class="icon">📢</div>
+          <h4>营销端口</h4>
+          <p>万相台/直通车投放；抖音拉新引流；人群包精准选择；实时出价调整</p>
+        </div>
+        <div class="flow-ring-node flow-node-tr">
+          <div class="icon">📋</div>
+          <h4>策划端口</h4>
+          <p>活动主题节奏规划；会员优先购/抽签机制；防黄牛规则；双渠道协同方案</p>
+        </div>
+        <div class="flow-ring-node flow-node-br">
+          <div class="icon">📈</div>
+          <h4>流量端口</h4>
+          <p>公域流量获取；SEO/SEM优化；私域蓄水运营；流量互导闭环</p>
+        </div>
+        <div class="flow-ring-node flow-node-bottom">
+          <div class="icon">📦</div>
+          <h4>货品端口</h4>
+          <p>波士顿矩阵货品分层；独立库存分配；热款库存预警；价格统一管控</p>
+        </div>
+        <div class="flow-ring-node flow-node-bl">
+          <div class="icon">🎨</div>
+          <h4>视觉端口</h4>
+          <p>店铺视觉升级；主图视频与场景素材；AI+设计师A/B测试；IP素材审核</p>
+        </div>
+        <div class="flow-ring-node flow-node-tl">
+          <div class="icon">💬</div>
+          <h4>客服端口</h4>
+          <p>FAQ标准话术；爆发期双倍响应；改地址/合并订单/售后；异常订单拦截</p>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding:16px;background:#fff;border-radius:8px;font-size:13.5px;color:#4a5568;">
+        <strong>协同机制：</strong>货品团队提供货品结构数据 → 视觉团队确定主推款视觉优先级 → 推广团队根据A/B测试点击率优化投放 → 流量数据反哺货品库存决策。六端通过数据中台实现闭环联动，确保"私域蓄水 → 天猫爆发 → 私域沉淀"的完整链路。
+      </div>
+    </div>
+
+    <!-- 双渠道分工 -->
+    <div class="card">
+      <h3>三、"超级新品日" — 天猫与微信私域双渠道分工</h3>
+      <table class="data-table">
+        <thead><tr><th>渠道</th><th>核心目标</th><th>关键动作</th></tr></thead>
+        <tbody>
+          <tr><td><strong>天猫</strong></td><td>新品首发声量、公域流量获取、全店GMV爆发、类目卡位</td><td>新品独家首发、预约抽签、会员优先购、直播、内容种草、平台资源位</td></tr>
+          <tr><td><strong>微信私域</strong></td><td>老客/会员深度唤醒、稀缺感营造、精准转化、数据沉淀</td><td>小程序抽签/优先购、社群预热、公众号推文、视频号直播、企业微信1v1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 节奏协同 -->
+    <div class="card">
+      <h3>四、双端节奏协同时间表</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="time">预热期</div>
+          <div class="content">
+            <h5>天猫：新品预告、预约开启、内容种草</h5>
+            <p>微信：公众号推文、社群预热、企微1v1提醒、小程序预约</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">蓄水期</div>
+          <div class="content">
+            <h5>天猫：抽签报名、会员优先购资格发放、直播预告</h5>
+            <p>微信：抽签结果通知、专属优惠券发放、视频号直播预约</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">爆发期</div>
+          <div class="content">
+            <h5>天猫：10:00新品首发、直播爆发、付费推广加码</h5>
+            <p>微信：抽签开奖、视频号直播、社群实时互动、小程序抢购</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">返场期</div>
+          <div class="content">
+            <h5>天猫：未中签用户引导、长尾款销售、数据复盘</h5>
+            <p>微信：中签用户晒单、社群二次种草、积分兑换</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 执行SOP -->
+    <div class="card">
+      <h3>五、天猫平台执行 SOP 要点</h3>
+      <div class="two-col">
+        <div>
+          <h4>准备期</h4>
+          <ul>
+            <li>新品上架：类目选择"潮玩盲盒"</li>
+            <li>页面合规：公示隐藏款概率 + 年龄确认弹窗</li>
+            <li>优惠券：店铺券 + 会员专享券，避免叠加破价</li>
+            <li>会员优先购：Lv2及以上，开售前1小时</li>
+            <li>风控设置：异常订单拦截 + 单品限购</li>
+          </ul>
+        </div>
+        <div>
+          <h4>爆发期关键动作</h4>
+          <ul>
+            <li>10:00准时开售，会员通道优先1小时</li>
+            <li>热款库存低于20%启动安全预警</li>
+            <li>店铺自播8小时+，穿插抽奖/免单互动</li>
+            <li>20:00-22:00流量高峰预算加码</li>
+            <li>双倍客服，优先处理改地址/合并订单</li>
+            <li>同一地址10单以上人工审核拦截黄牛</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 竞品分析 ===== -->
+<section class="section" id="competitor">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">03 / COMPETITOR ANALYSIS</div>
+      <h2>竞品分析</h2>
+      <p>基于天猫商品评价数据的深度挖掘 — 泡泡玛特 CRYBABY vs 52TOYS 小水豚萌粒</p>
+    </div>
+
+    <!-- 对比指标 -->
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">180条</div><div class="label">CRYBABY 评价样本</div></div>
+      <div class="stat-card"><div class="num">51条</div><div class="label">小水豚 评价样本</div></div>
+      <div class="stat-card"><div class="num">84.4%</div><div class="label">CRYBABY 正面率</div></div>
+      <div class="stat-card"><div class="num">88.2%</div><div class="label">小水豚 正面率</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="chart-box">
+        <h3>CRYBABY 情感倾向分布</h3>
+        <div id="chart-c1" class="chart"></div>
+      </div>
+      <div class="chart-box">
+        <h3>小水豚 情感倾向分布</h3>
+        <div id="chart-c2" class="chart"></div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h3>用户提及维度对比（提及条数）</h3>
+      <div id="chart-c3" class="chart chart-tall"></div>
+    </div>
+
+    <div class="two-col">
+      <div class="chart-box">
+        <h3>CRYBABY 款式提及排行 TOP10</h3>
+        <div id="chart-c4" class="chart chart-tall"></div>
+      </div>
+      <div class="chart-box">
+        <h3>小水豚 高频关键词 TOP15</h3>
+        <div id="chart-c5" class="chart chart-tall"></div>
+      </div>
+    </div>
+
+    <!-- 核心发现 -->
+    <div class="card">
+      <h3>核心发现与对比洞察</h3>
+      <div class="insight-item">
+        <span class="tag tag-blue">外观驱动</span>
+        <strong>两款产品均以"可爱"为核心购买驱动力</strong>
+        <p>CRYBABY 外观提及率50%（90条），小水豚外观提及率51%（26条）。"可爱""萌""好看"是最高频词汇，萌系外观是潮玩盲盒品类的核心竞争力。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-green">价格分层</span>
+        <strong>¥129 vs ¥19.9：不同价位的用户行为差异</strong>
+        <p>CRYBABY（¥129）用户更关注质量做工（26.1%）和送礼场景（10.6%），5.6%提及品控瑕疵；小水豚（¥19.9）用户对质量容忍度高，质量提及均为正面，无质量差评。低价走量策略降低决策门槛，70.6%购买单盒。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-orange">隐藏款杠杆</span>
+        <strong>隐藏款是刺激复购和抽盒的核心杠杆</strong>
+        <p>CRYBABY隐藏款"美人鱼"提及率7.2%（13条），抽到用户普遍极度兴奋；小水豚隐藏款"不屑一顾"是最受关注款式（4次，7.8%），用户明确表达"很喜欢隐藏的不屑一顾"。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-red">差评共性</span>
+        <strong>差评集中于"抽不到想要的款式"，非产品质量</strong>
+        <p>CRYBABY明确负面9条（5%），主要痛点为物流慢（14.4%）+ 品控瑕疵（5.6%）；小水豚真实负面仅2条（3.9%），全部为抽盒体验问题。盲盒品类共性问题，可通过增加款式展示、设置许愿机制缓解。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-purple">人气款效应</span>
+        <strong>CRYBABY"咕噜咕噜"人气断层第一</strong>
+        <p>咕噜咕噜提及率18.3%（33条），是全系列最受欢迎款式，远超第二名黑妹（10.6%）。可围绕该款式做周边/返场，人气款的IP运营价值巨大。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 运营诊断 ===== -->
+<section class="section" id="diagnosis" style="background:#fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">04 / OPERATION DIAGNOSIS</div>
+      <h2>运营诊断</h2>
+      <p>长江号子店铺全维度数据诊断 — 基于生意参谋12个月销售数据（2025.7 - 2026.7）</p>
+    </div>
+
+    <!-- 数据能力说明 -->
+    <div class="card">
+      <h3>数据处理能力展示</h3>
+      <p>使用<strong>数据透视表</strong>和<strong>VLOOKUP</strong>处理生意参谋平台导出的商品维度数据，搭建五个分析模型：月度汇总表、品类分析、商品TOP10排行、转化漏斗、效率矩阵。</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">102,647</div><div class="label">商品访客数</div></div>
+        <div class="stat-card"><div class="num">¥170,770</div><div class="label">总支付金额</div></div>
+        <div class="stat-card"><div class="num">3,071</div><div class="label">支付买家数</div></div>
+        <div class="stat-card"><div class="num">2.99%</div><div class="label">整体支付转化率</div></div>
+      </div>
+    </div>
+
+    <!-- 品类分析 -->
+    <div class="card">
+      <h3>一、品类分析 — 谁是利润支柱，谁是流量黑洞？</h3>
+      <table class="data-table">
+        <thead><tr><th>品类</th><th>支付金额</th><th>占比</th><th>访客数</th><th>转化率</th><th>访客平均价值</th><th>评价</th></tr></thead>
+        <tbody>
+          <tr><td><strong>面食</strong></td><td>¥46,456</td><td>27.2%</td><td>20,232</td><td>3.26%</td><td>¥2.30</td><td>销售额冠军，核心品类</td></tr>
+          <tr><td><strong>胡豆零食</strong></td><td>¥39,447</td><td>23.1%</td><td>45,369</td><td style="color:#e53e3e;">2.54%</td><td>¥0.87</td><td>流量担当，转化低迷</td></tr>
+          <tr><td><strong>麻花</strong></td><td>¥27,495</td><td>16.1%</td><td>25,288</td><td>2.11%</td><td>¥1.09</td><td>流量大，转化和客单价偏低</td></tr>
+          <tr><td><strong>牛肉零食</strong></td><td>¥24,071</td><td>14.1%</td><td>2,966</td><td style="color:#38a169;font-weight:700;">10.99%</td><td style="color:#38a169;font-weight:700;">¥8.12</td><td>明星品类！转化率极高</td></tr>
+          <tr><td><strong>火锅底料</strong></td><td>¥24,434</td><td>14.3%</td><td>5,352</td><td>5.14%</td><td>¥4.57</td><td>利润品类，表现优秀</td></tr>
+          <tr><td>榨菜</td><td>¥5,778</td><td>3.4%</td><td>2,452</td><td>3.63%</td><td>¥2.36</td><td>凑单/关联销售</td></tr>
+          <tr><td>猪蹄/其他</td><td>¥2,089</td><td>1.2%</td><td>876</td><td>3.20%</td><td>¥2.38</td><td>长尾商品</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col">
+      <div class="chart-box">
+        <h3>品类支付金额占比</h3>
+        <div id="chart-d1" class="chart"></div>
+      </div>
+      <div class="chart-box">
+        <h3>品类转化率 vs 访客平均价值</h3>
+        <div id="chart-d2" class="chart"></div>
+      </div>
+    </div>
+
+    <!-- 商品TOP10 -->
+    <div class="card">
+      <h3>二、商品 TOP5 排行分析</h3>
+      <table class="data-table">
+        <thead><tr><th>商品名称</th><th>访客数</th><th>支付金额</th><th>加购人数</th><th>综合评级</th></tr></thead>
+        <tbody>
+          <tr><td>重庆特产怪味胡豆260g</td><td>33,689</td><td>¥22,676</td><td>897</td><td><span class="tag tag-red">流量王：转化仅0.67%，效率低下</span></td></tr>
+          <tr><td>重庆特产店磁器口麻花500g</td><td>8,827</td><td>¥19,081</td><td>598</td><td><span class="tag tag-blue">稳健型：流量销售额均优秀</span></td></tr>
+          <tr><td>灯影牛肉丝308g</td><td>2,710</td><td>¥23,043</td><td>536</td><td><span class="tag tag-green">利润王牌：转化8.12%，客单价高</span></td></tr>
+          <tr><td>【晴儿专属】豌豆杂酱面</td><td>1,502</td><td>¥18,231</td><td>277</td><td><span class="tag tag-green">高转化爆款：转化9.92%，达人效应</span></td></tr>
+          <tr><td>豌杂面735g家庭装</td><td>1,782</td><td>¥7,439</td><td>246</td><td><span class="tag tag-orange">潜力单品：转化3.87%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 转化漏斗 -->
+    <div class="card">
+      <h3>三、整体转化漏斗诊断 — 用户在哪一步流失？</h3>
+      <div class="chart-box" style="box-shadow:none;padding:0;">
+        <div id="chart-d3" class="chart chart-tall"></div>
+      </div>
+      <div class="insight-item" style="margin-top:16px;">
+        <span class="tag tag-red">第一致命点</span>
+        <strong>访客 → 加购：94.86% 的访客未加购</strong>
+        <p>流量质量差（大量无购买意向的课程流量冲刷数据）；商品详情页吸引力不足（主图、价格、评价、卖点未能激发购买欲望）。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-orange">第二关键点</span>
+        <strong>加购 → 下单：1.84% 的加购用户未下单</strong>
+        <p>加购到下单转化良好，仅1.84%流失，说明加购用户购买意向明确，商品价格与组合策略有效。可继续通过加购优惠、限时提醒等方式进一步提升。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-green">第三关键点</span>
+        <strong>下单 → 支付：接近0流失</strong>
+        <p>下单到支付几乎无流失，说明支付流程顺畅、支持的支付方式完善，用户结账体验良好。</p>
+      </div>
+    </div>
+
+    <!-- 效率矩阵 -->
+    <div class="card">
+      <h3>四、效率矩阵</h3>
+      <p>以"商品访客数"为横轴（流量规模）、"实际转化率"为纵轴（运营效率）、气泡大小代表"支付金额"，对9个品类进行效率定位分析。</p>
+      <div class="chart-box" style="box-shadow:none;padding:0;margin-top:16px;">
+        <div id="chart-d4" class="chart chart-tall"></div>
+      </div>
+      <h4>1. 四象限定位分析</h4>
+      <div class="insight-item">
+        <span class="tag tag-green">明星品类</span>
+        <strong>牛肉零食 — 低流量、高转化、高产出</strong>
+        <p>访客数仅2,966（全店第7），但转化率高达10.99%（全店第1），支付金额24,071元（全店第4）。流量虽少但用户精准、购买意愿极强，是真正的效率明星。应加大引流投入，扩大流量规模。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-blue">现金牛品类</span>
+        <strong>面食、火锅底料 — 中流量、中高转化、高产出</strong>
+        <p>面食访客20,232、转化3.26%、支付金额46,456元（全店第1）；火锅底料访客5,352、转化5.14%、支付金额24,434元。两者转化效率均高于均值，产出稳定，是店铺的现金牛。应维护优势，优化成本，提升利润。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-red">流量黑洞</span>
+        <strong>胡豆零食、麻花 — 高流量、低转化、产出不成正比</strong>
+        <p>胡豆零食访客45,369（全店第1，占44%流量），但转化率仅2.54%，支付金额39,447元；麻花访客25,288（全店第3），转化率仅2.11%（全店最低），支付金额27,495元。两者消耗了大量流量资源，但转化效率低下，是典型的"流量黑洞"。需优化详情页、价格策略，或缩减推广预算。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-orange">潜力品类</span>
+        <strong>酸辣粉 — 极低流量、高转化</strong>
+        <p>酸辣粉访客仅112（全店最低），但转化率7.14%（全店第2），说明产品本身有吸引力，只是缺乏曝光。可尝试增加推广资源，测试其流量放大后的产出能力。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-gray">长尾品类</span>
+        <strong>榨菜、猪蹄、其他 — 低流量、低转化、低产出</strong>
+        <p>榨菜访客2,452、转化3.63%、支付5,778元；猪蹄访客718、转化2.79%、支付1,191元；其他访客158、转化5.06%、支付899元。三者体量小、贡献有限，可作为凑单或关联销售商品，无需投入过多运营资源。</p>
+      </div>
+      <h4>2. 核心结论</h4>
+      <p>效率矩阵清晰揭示了店铺<strong>"流量与效率错配"</strong>的问题：44%的流量集中在转化率最低的胡豆零食和麻花上，而转化率最高的牛肉零食（10.99%）和酸辣粉（7.14%）却获得极少流量。运营策略应从"流量导向"转向"效率导向"，将推广资源向高转化品类倾斜，同时优化低转化品类的详情页和价格策略，提升整体ROI。</p>
+    </div>
+
+    <!-- 策略建议 -->
+    <div class="card">
+      <h3>五、运营策略建议</h3>
+      <div class="two-col">
+        <div>
+          <h4>📈 流量端：精细化运营</h4>
+          <ul>
+            <li>针对"课程流量"设计专属任务（浏览3分钟/收藏/分享），完成后获优惠券，将一过性浏览转化为深度互动</li>
+            <li>复盘11月流量来源，暂停不精准渠道，预算集中在"牛肉零食""火锅底料"精准关键词</li>
+          </ul>
+          <h4>🎯 转化端：优化问题品类</h4>
+          <ul>
+            <li>怪味胡豆260g进行A/B测试：优化主图（突出蟹黄/麻辣口味）、详情页（强调老字号、独立包装）</li>
+            <li>尝试"第二件半价""多件折扣"提升客单价和转化率</li>
+            <li>流量商品页强关联灯影牛肉丝/火锅底料等高利润商品</li>
+          </ul>
+        </div>
+        <div>
+          <h4>👥 用户端：提升留存复购</h4>
+          <ul>
+            <li>建立微信群/微淘粉丝群，定期发放专属优惠、新品试吃、直播预告</li>
+            <li>加购未支付用户24小时后发送小额优惠券或库存紧张提醒</li>
+          </ul>
+          <h4>📦 商品端：数据驱动产品规划</h4>
+          <ul>
+            <li>开发"组合套装"：怪味胡豆 + 灯影牛肉丝 = "重庆特产尝鲜大礼包"，提升客单价同时带动低转化商品</li>
+            <li>冬季重点备货推广面食、火锅底料；夏季重点推广零食、酸辣粉</li>
+            <li>为高转化商品（灯影牛肉丝、晴儿专属豌杂面）增加SKU，给予更多推广资源</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AI工具使用案例 ===== -->
+<section class="section" id="ai">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="num">05 / AI CASE STUDY</div>
+      <h2>AI 工具使用案例</h2>
+      <p>利用 PyCharm 与 AI 工具抓取天猫商品评论全流程实操 — 从环境搭建到数据可视化</p>
+    </div>
+
+    <!-- 项目概览 -->
+    <div class="card">
+      <h3>项目概览</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">taobao_mcp</div><div class="label">开源抓取工具（GitHub）</div></div>
+        <div class="stat-card"><div class="num">Playwright</div><div class="label">自动化浏览器引擎</div></div>
+        <div class="stat-card"><div class="num">231条</div><div class="label">累计抓取评价数据</div></div>
+        <div class="stat-card"><div class="num">2款</div><div class="label">竞品商品深度分析</div></div>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>商品</th><th>ID</th><th>价格</th><th>评价抓取量</th></tr></thead>
+        <tbody>
+          <tr><td>泡泡玛特 CRYBABY Vacation Mode On 搪胶毛绒挂件盲盒</td><td>961658534656</td><td>¥129</td><td>180 条</td></tr>
+          <tr><td>52TOYS 小水豚噜噜的日常萌粒盲盒</td><td>1068623015167</td><td>¥19.9</td><td>51 条</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 技术突破时间线 -->
+    <div class="card">
+      <h3>核心技术突破历程</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="time">阶段一：环境搭建</div>
+          <div class="content">
+            <h5>mcp 版本兼容性问题 — AI 自动诊断并给出降级方案</h5>
+            <p>pyproject.toml 要求 mcp>=0.9.0，uv 自动安装 mcp 2.2.0，但项目代码使用旧版 API（@mcp_server.list_tools()），导入时报 AttributeError。AI 分析报错后建议降级到 mcp 1.x（实际安装 mcp 1.30.0），问题解决。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">阶段二：评价抓取 2条 → 22条</div>
+          <div class="content">
+            <h5>点击"查看全部评价"按钮突破默认展示限制</h5>
+            <p>TaobaoScraper 默认只抓到2条评价（天猫详情页默认只展示2条）。AI 分析页面结构后，编写独立脚本在抓取流程中增加点击"查看全部评价"按钮的步骤，成功抓取22条评价。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">阶段三：评价抓取 22条 → 180条</div>
+          <div class="content">
+            <h5>滚动 + 分页 + 去重逻辑实现深度抓取</h5>
+            <p>点击后只显示20条左右，评价列表采用懒加载机制。AI 编写滚动+分页逻辑：每轮滚动20次触发懒加载 → 提取评价 → 去重 → 点击下一页。第一轮滚动即加载80条，持续滚动翻页后累计去重得到180条独特评价。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">阶段四：新版天猫详情页挑战</div>
+          <div class="content">
+            <h5>反自动化渲染机制 — 从 Playwright 到 UI Automation 的方案切换</h5>
+            <p>52TOYS商品使用天猫新版详情页（pc-detail-ssr-2025），在 Playwright Chromium 中页面高度仅1480px，详情/评价模块完全不加载。尝试6种方案均失败（直接抓取、评价API、监听网络请求、移动端UA、真实Chrome、browser-use）。AI 分析根本原因为反自动化渲染机制（检测 navigator.webdriver），最终提出 Windows UI Automation 操作真实 Edge 浏览器的替代方案。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">阶段五：UI Automation 成功抓取</div>
+          <div class="content">
+            <h5>通过 Win32 API + UI Automation 操作真实 Edge，成功抓取51条评价</h5>
+            <p>实现步骤：激活Edge窗口 → 定位并点击"查看全部评价"按钮 → 展开折叠评价（121条） → 鼠标滚轮滚动加载更多 → 通过 Document 控件 TextPattern 获取页面全文 → 按日期格式分割解析评价条目。成功抓取51条评价，包含用户名、日期、购买规格、评价内容、追评。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI工具作用 -->
+    <div class="card">
+      <h3>AI 工具在各阶段的作用</h3>
+      <div class="two-col">
+        <div class="flow-node" style="border-top-color:#e53e3e;">
+          <div class="icon">🔧</div>
+          <h4>环境搭建阶段</h4>
+          <p>AI 自动诊断 mcp 版本兼容性问题，给出降级方案；根据报错定位依赖缺失并自动安装；处理 GitHub 连接问题，提供镜像下载方案（codeload.github.com）。</p>
+        </div>
+        <div class="flow-node" style="border-top-color:#dd6b20;">
+          <div class="icon">💻</div>
+          <h4>脚本开发阶段</h4>
+          <p>AI 根据 taobao_scraper.py 源码理解抓取逻辑，编写扩展脚本；自动生成评价提取、滚动翻页、去重逻辑；处理 Playwright 选择器适配问题（新版页面 DOM 变化）。</p>
+        </div>
+        <div class="flow-node" style="border-top-color:#3182ce;">
+          <div class="icon">🔍</div>
+          <h4>问题排查阶段</h4>
+          <p>AI 分析新版天猫详情页不渲染的根本原因（反自动化机制）；提出 UI Automation 替代方案并实现 PowerShell 脚本；处理虚拟滚动、TextPattern 读取限制等技术细节。</p>
+        </div>
+        <div class="flow-node" style="border-top-color:#38a169;">
+          <div class="icon">📊</div>
+          <h4>数据分析阶段</h4>
+          <p>AI 自动设计分析维度和关键词词典；生成 ECharts 可视化代码（情感分布、维度提及、款式排行、高频词等6类图表）；撰写关键洞察和策略建议。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关键代码展示 -->
+    <div class="card">
+      <h3>核心代码片段 — 滚动翻页深度抓取</h3>
+      <div class="code-block">
+<span class="comment"># 滚动 + 分页 + 去重逻辑</span>
+all_reviews = []
+seen_ids = set()
+<span class="keyword">for</span> page_num <span class="keyword">in</span> range(1, 15):  <span class="comment"># 最多翻15页</span>
+    <span class="comment"># 滚动触发懒加载</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> range(20):
+        await page.evaluate(<span class="keyword">"window.scrollBy(0, 500)"</span>)
+        await page.wait_for_timeout(300)
+    <span class="comment"># 提取当前页面评价并去重</span>
+    reviews = await extract_reviews(page)
+    <span class="keyword">for</span> r <span class="keyword">in</span> reviews:
+        rid = r.get(<span class="keyword">'review_id'</span>) <span class="keyword">or</span> r.get(<span class="keyword">'review_text'</span>, <span class="keyword">''</span>)[:50]
+        <span class="keyword">if</span> rid <span class="keyword">not in</span> seen_ids:
+            seen_ids.add(rid)
+            all_reviews.append(r)
+    <span class="comment"># 点击下一页</span>
+    next_btn = await page.query_selector(<span class="keyword">'.next-page, text=下一页'</span>)
+    <span class="keyword">if</span> next_btn:
+        await next_btn.click()
+        await page.wait_for_timeout(2000)
+    <span class="keyword">else</span>:
+        <span class="keyword">break</span>
+      </div>
+    </div>
+
+    <!-- 经验总结 -->
+    <div class="card">
+      <h3>经验与收获</h3>
+      <div class="insight-item">
+        <span class="tag tag-blue">版本兼容</span>
+        <strong>开源 MCP 项目普遍存在 API 版本兼容性问题</strong>
+        <p>遇到 AttributeError 时优先检查依赖版本，而非代码逻辑。mcp 2.x 与 1.x API 不兼容，降级是最快解决方案。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-green">反自动化</span>
+        <strong>电商平台反自动化机制日益增强，自动化浏览器并非万能</strong>
+        <p>天猫新版详情页通过检测 navigator.webdriver 等特征阻止自动化渲染。当 Playwright/browser-use 均失效时，UI Automation 操作真实浏览器是有效替代方案。</p>
+      </div>
+      <div class="insight-item">
+        <span class="tag tag-orange">AI赋能</span>
+        <strong>AI 工具显著提升开发效率，但需人工验证关键逻辑</strong>
+        <p>AI 在环境诊断、脚本生成、问题排查、数据分析各阶段均发挥重要作用。但对于抓取结果的准确性（如评价去重、情感分类），仍需人工抽样验证。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+  <p><strong>李佳硕</strong> · 电子商务本科 · 2027届 · 求职意向：国内/跨境电商运营</p>
+  <p style="margin-top:8px;">本作品集包含活动策划、竞品分析、运营诊断、AI工具应用四个方向的实操项目</p>
+</footer>
+
+<script>
+// ===== 竞品分析图表 =====
+// CRYBABY 情感分布
+var c1 = echarts.init(document.getElementById('chart-c1'));
+c1.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {c}条 ({d}%)' },
+  legend: { bottom: 0 },
+  series: [{
+    type: 'pie', radius: ['40%', '65%'], center: ['50%', '45%'],
+    itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+    label: { formatter: '{b}\n{d}%', fontSize: 12 },
+    data: [
+      { value: 152, name: '正面', itemStyle: { color: '#38a169' } },
+      { value: 19, name: '中性', itemStyle: { color: '#d69e2e' } },
+      { value: 9, name: '负面', itemStyle: { color: '#e53e3e' } }
+    ]
+  }]
+});
+
+// 小水豚 情感分布
+var c2 = echarts.init(document.getElementById('chart-c2'));
+c2.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {c}条 ({d}%)' },
+  legend: { bottom: 0 },
+  series: [{
+    type: 'pie', radius: ['40%', '65%'], center: ['50%', '45%'],
+    itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+    label: { formatter: '{b}\n{d}%', fontSize: 12 },
+    data: [
+      { value: 45, name: '正面', itemStyle: { color: '#38a169' } },
+      { value: 2, name: '中性', itemStyle: { color: '#d69e2e' } },
+      { value: 4, name: '负面', itemStyle: { color: '#e53e3e' } }
+    ]
+  }]
+});
+
+// 维度对比
+var c3 = echarts.init(document.getElementById('chart-c3'));
+c3.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  legend: { data: ['CRYBABY(180条)', '小水豚(51条)'], top: 0 },
+  grid: { left: 100, right: 40, top: 40, bottom: 30, containLabel: true },
+  xAxis: { type: 'value', name: '提及条数' },
+  yAxis: { type: 'category', data: ['包装','复购/上瘾','瑕疵/品控','价格/性价比','手感/触感','配件/衣服','送礼','物流/发货','质量/做工','盲盒体验','外观/颜值'] },
+  series: [
+    {
+      name: 'CRYBABY(180条)', type: 'bar',
+      data: [6,10,10,11,14,15,19,26,47,71,90],
+      itemStyle: { color: '#667eea', borderRadius: [0,4,4,0] },
+      label: { show: true, position: 'right', fontSize: 11 }
+    },
+    {
+      name: '小水豚(51条)', type: 'bar',
+      data: [0,0,0,0,0,0,0,3,7,10,26],
+      itemStyle: { color: '#f5576c', borderRadius: [0,4,4,0] },
+      label: { show: true, position: 'right', fontSize: 11 }
+    }
+  ]
+});
+
+// CRYBABY 款式排行
+var c4 = echarts.init(document.getElementById('chart-c4'));
+c4.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: function(p){ return p[0].name + ': ' + p[0].value + '条 (' + (p[0].value/180*100).toFixed(1) + '%)'; } },
+  grid: { left: 100, right: 40, top: 20, bottom: 30, containLabel: true },
+  xAxis: { type: 'value' },
+  yAxis: { type: 'category', data: ['全力起航','日光沐浴','大辫子','紫色/小紫','沙滩小憩','封面款','恋夏一族','美人鱼(隐藏)','黑妹/黑娃','咕噜咕噜'] },
+  series: [{
+    type: 'bar',
+    data: [1,3,3,3,4,4,4,13,19,33],
+    itemStyle: { color: function(p){ var colors = ['#ff9c6e','#ffc069','#ffd666','#95de64','#5cdbd3','#69c0ff','#85a5ff','#b37feb','#ff85c0','#ff4d4f']; return colors[p.dataIndex]; }, borderRadius: [0,4,4,0] },
+    label: { show: true, position: 'right', formatter: '{c}条', fontSize: 11 }
+  }]
+});
+
+// 小水豚 高频词
+var c5 = echarts.init(document.getElementById('chart-c5'));
+c5.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  grid: { left: 80, right: 40, top: 20, bottom: 30, containLabel: true },
+  xAxis: { type: 'value', name: '提及次数' },
+  yAxis: { type: 'category', data: ['做工','质感','好看','水豚','太','不错','质量','抽','隐藏','小','喜欢','噜噜','萌','非常','可爱'] },
+  series: [{
+    type: 'bar',
+    data: [2,2,3,3,3,3,3,4,6,8,8,10,11,14,22],
+    itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#f093fb'},{offset:1,color:'#f5576c'}]), borderRadius: [0,4,4,0] },
+    label: { show: true, position: 'right', fontSize: 11 }
+  }]
+});
+
+// ===== 运营诊断图表 =====
+// 品类金额占比
+var d1 = echarts.init(document.getElementById('chart-d1'));
+d1.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)' },
+  legend: { bottom: 0, type: 'scroll' },
+  series: [{
+    type: 'pie', radius: ['35%', '65%'], center: ['50%', '45%'],
+    itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+    label: { formatter: '{b}\n{d}%', fontSize: 11 },
+    data: [
+      { value: 46456, name: '面食', itemStyle: { color: '#3182ce' } },
+      { value: 39447, name: '胡豆零食', itemStyle: { color: '#e53e3e' } },
+      { value: 27495, name: '麻花', itemStyle: { color: '#d69e2e' } },
+      { value: 24071, name: '牛肉零食', itemStyle: { color: '#38a169' } },
+      { value: 24434, name: '火锅底料', itemStyle: { color: '#805ad5' } },
+      { value: 5778, name: '榨菜', itemStyle: { color: '#718096' } },
+      { value: 2089, name: '猪蹄/其他', itemStyle: { color: '#a0aec0' } }
+    ]
+  }]
+});
+
+// 品类转化率 vs 访客价值
+var d2 = echarts.init(document.getElementById('chart-d2'));
+d2.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+  legend: { data: ['转化率(%)', '访客平均价值(¥)'], top: 0 },
+  grid: { left: 50, right: 50, top: 40, bottom: 60, containLabel: true },
+  xAxis: { type: 'category', data: ['面食','胡豆','麻花','牛肉','火锅底料','榨菜','猪蹄'], axisLabel: { rotate: 30, fontSize: 11 } },
+  yAxis: [
+    { type: 'value', name: '转化率(%)', position: 'left' },
+    { type: 'value', name: '访客价值(¥)', position: 'right' }
+  ],
+  series: [
+    { name: '转化率(%)', type: 'bar', data: [3.26, 2.54, 2.11, 10.99, 5.14, 3.63, 3.20], itemStyle: { color: '#3182ce', borderRadius: [4,4,0,0] } },
+    { name: '访客平均价值(¥)', type: 'line', yAxisIndex: 1, data: [2.30, 0.87, 1.09, 8.12, 4.57, 2.36, 2.38], itemStyle: { color: '#e53e3e' }, lineStyle: { width: 3 }, symbolSize: 8 }
+  ]
+});
+
+// 转化漏斗
+var d3 = echarts.init(document.getElementById('chart-d3'));
+d3.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {c}人' },
+  series: [{
+    type: 'funnel',
+    left: '10%', width: '80%',
+    min: 0, max: 110000,
+    minSize: '20%', maxSize: '100%',
+    sort: 'descending', gap: 4,
+    label: { show: true, position: 'inside', formatter: '{b}\n{c}人', fontSize: 14, fontWeight: 'bold' },
+    itemStyle: { borderColor: '#fff', borderWidth: 2 },
+    data: [
+      { value: 102647, name: '商品访客', itemStyle: { color: '#3182ce' } },
+      { value: 5276, name: '商品加购', itemStyle: { color: '#63b3ed' } },
+      { value: 3387, name: '下单买家', itemStyle: { color: '#f6ad55' } },
+      { value: 3071, name: '支付买家', itemStyle: { color: '#38a169' } }
+    ]
+  }]
+});
+
+// 效率矩阵散点图
+var d4 = echarts.init(document.getElementById('chart-d4'));
+d4.setOption({
+  tooltip: {
+    trigger: 'item',
+    formatter: function(p) {
+      return '<strong>' + p.data[3] + '</strong><br/>访客数: ' + p.data[0].toLocaleString() +
+             '<br/>转化率: ' + p.data[1] + '%<br/>支付金额: ¥' + p.data[2].toLocaleString();
+    }
+  },
+  grid: { left: 70, right: 40, top: 40, bottom: 70 },
+  xAxis: {
+    type: 'log', name: '商品访客数（对数刻度）',
+    nameLocation: 'middle', nameGap: 40, min: 80, max: 60000,
+    axisLabel: { formatter: function(v) { return v >= 10000 ? (v/10000) + '万' : v; } }
+  },
+  yAxis: {
+    type: 'value', name: '实际转化率(%)',
+    nameLocation: 'middle', nameGap: 45, min: 0, max: 12
+  },
+  series: [{
+    type: 'scatter',
+    symbolSize: function(data) { return Math.sqrt(data[2]) * 0.75; },
+    label: {
+      show: true, formatter: function(p) { return p.data[3]; },
+      position: 'top', fontSize: 12, fontWeight: 'bold', color: '#2d3748'
+    },
+    markLine: {
+      silent: true, symbol: 'none',
+      lineStyle: { color: '#a0aec0', type: 'dashed', width: 1 },
+      data: [
+        { yAxis: 4.74, label: { formatter: '均值 4.74%', position: 'end', fontSize: 11 } },
+        { xAxis: 11405, label: { formatter: '均值 1.14万', position: 'end', fontSize: 11 } }
+      ]
+    },
+    data: [
+      [45369, 2.54, 39447, '胡豆零食'],
+      [25288, 2.11, 27495, '麻花'],
+      [20232, 3.26, 46456, '面食'],
+      [5352, 5.14, 24434, '火锅底料'],
+      [2966, 10.99, 24071, '牛肉零食'],
+      [2452, 3.63, 5778, '榨菜'],
+      [718, 2.79, 1191, '猪蹄'],
+      [158, 5.06, 899, '其他'],
+      [112, 7.14, 719, '酸辣粉']
+    ],
+    itemStyle: {
+      color: function(p) {
+        var r = p.data[1];
+        if (r >= 7) return '#38a169';
+        if (r >= 4.5) return '#3182ce';
+        if (r >= 3) return '#d69e2e';
+        return '#e53e3e';
+      },
+      opacity: 0.78, borderColor: '#fff', borderWidth: 2
+    }
+  }]
+});
+
+// 响应式
+window.addEventListener('resize', function() {
+  c1.resize(); c2.resize(); c3.resize(); c4.resize(); c5.resize();
+  d1.resize(); d2.resize(); d3.resize(); d4.resize();
+});
+
+// 导航高亮
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', function() {
+  var current = '';
+  sections.forEach(function(s) {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(function(a) {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
